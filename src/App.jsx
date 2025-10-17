@@ -1,17 +1,19 @@
 // src/App.jsx
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage";
-import './App.css';
+import TimelinesPage from "./components/TimelinesPage";
+import FailedIdeas from "./components/FailedIdeas";
+import "./index.css";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        {/* Add more routes here when needed */}
+        <Route path="/timelines" element={<TimelinesPage />} />
+        <Route path="/failed" element={<FailedIdeas />} />
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;

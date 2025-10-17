@@ -16,7 +16,7 @@ function HomePage() {
       />
       <button
         className="next-button"
-        onClick={() => navigate("/next")}
+        onClick={() => navigate("/timelines")}
       >
         Let’s Go ➡️
       </button>
