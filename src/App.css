@@ -1,0 +1,40 @@
+/* src/App.css */
+body {
+  margin: 0;
+  background-color: #fff0f5;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.homepage-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #ff69b4;
+  margin-bottom: 20px;
+}
+
+.cute-image {
+  width: 60%;
+  max-width: 400px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #ffc0cb;
+}
+
+.next-button {
+  margin-top: 30px;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  background-color: #ff85c1;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-button:hover {
+  background-color: #ffa7d1;
+}
