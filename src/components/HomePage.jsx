@@ -17,7 +17,7 @@ function HomePage() {
           className="next-button"
           onClick={() => navigate("/timelines")}
         >
-          Best of luck (to me) ➡️
+          Best of luck (to both you & I 🤞) 
         </button>
       </div>
     </div>

@@ -4,23 +4,35 @@ import { useNavigate } from "react-router-dom";
 import "../styles/TimelinesPage.css";
 
 const ITEMS = [
-  { id: 1, file: "/FirstImage.jpg", title: "29th Feb, 2024", caption: "Who knew this was going to start a fun journey! 😂" },
-  { id: 2, file: "/SecondImage.jpg", title: "20th Jun, 2024", caption: "Projects with you were extra fun. Case in point" },
-  { id: 3, file: "/ThirdImage.jpg", title: "14th Sept, 2024", caption: "Naive of us to be okay missing an opportunity to meet" },
-  { id: 4, file: "/ForthImage.jpg", title: "01st Jan, 2025", caption: "You innocently shared this picture with me. I've held it with me since" },
-  { id: 5, file: "/FifthImage.jpg", title: "11th Jan, 2025", caption: "Definetly not a bad looking pair (imo)" },
+  { id: 1, file: "/FirstImage.jpg", title: "29th Feb, 2024", caption: "I think this was the first sign of a friendship growing over Whatsapp. Defintely could not have predicted the longitevity of it" },
+  { id: 2, file: "/SecondImage.jpg", title: "20th Jun, 2024", caption: "Projects with you have always been a lot of fun. But this was a crazy bomb to receive from CT before a fun friday 😂" },
+  { id: 3, file: "/ThirdImage.jpg", title: "14th Sept, 2024", caption: "Naive of us to be okay missing an opportunity to meet. Now it's all we talk about 😂" },
+  { id: 4, file: "/ForthImage.jpg", title: "01st Jan, 2025", caption: "You innocently shared this picture. I've held on to it since (I hope this is not a creep alert 😂)" },
+  { id: 5, file: "/FifthImage.jpg", title: "11th Jan, 2025", caption: "Definetly not a bad looking pair. Still a mystery that we have 0 nice pictures together facing the camera" },
   { id: 6, file: "/SixthImage.jpg", title: "12th Jan, 2025", caption: "Nothing here, just an empty room" },
   { id: 7, file: "/SeventhImage.jpg", title: "15th Jan, 2025", caption: "First long text. Many many more to come" },
-  { id: 8, file: "/EighthImage.jpg", title: "04th Feb, 2025", caption: "Convincing you has been the hardest, but a super fun task" },
-  { id: 9, file: "/NinthImage.jpg", title: "15th Feb, 2025", caption: "I was very close to texting you on valentines. This text was a day-late compromise" },
-  { id: 10, file: "/TenthImage.jpg", title: "26th Feb, 2025", caption: "By far, my favourite thing" },
-  { id: 11, file: "/Option2.jpg", title: "01 Jun, 2025", caption: "This made my day. Period." },
-  { id: 12, file: "/Option1.jpg", title: "15th Jul, 2025", caption: "This taught me to put my money where my mouth is" },
-  { id: 13, file: "/EleventhImage.jpg", title: "30th Aug, 2025", caption: "The start to an awesome trip" },
-  { id: 14, file: "/TwelthImage.jpg", title: "2nd Sep", caption: "Start to dramatic 3 days of our lives captured perfectly" },
+  { id: 8, file: "/EighthImage.jpg", title: "04th Feb, 2025", caption: "These debates are so much fun. We almost never have them anymore. What happened? 😂" },
+  { id: 9, file: "/NinthImage.jpg", title: "15th Feb, 2025", caption: "I was very close to texting you on valentines day. This text was a day-late compromise I made with myself 😂" },
+  { id: 10, file: "/TenthImage.jpg", title: "26th Feb, 2025", caption: "By far, my most favourite thing about us" },
+  { id: 11, file: "/Option2.jpg", title: "01 Jun, 2025", caption: "This text made my birthday. Thank you once againnn" },
+  { id: 12, file: "/Option1.jpg", title: "15th Jul, 2025", caption: "Ummmmm, not sure why I am reminding you of this. Ignoreee" },
+  { id: 13, file: "/EleventhImage.jpg", title: "30th Aug, 2025", caption: "The start to a trip" },
+  { id: 14, file: "/TwelthImage.jpg", title: "2nd Sep", caption: "Beautiful picture captured. What unfolded were 2 days of 🤯😭😶😳" },
   { id: 15, file: "/ThirteenthImage.jpg", title: "23rd Sep", caption: "I live for this kind of content" },
   { id: 16, file: "/FourteenthImage.jpg", title: "9th Oct", caption: "and this!" },
-  { id: 17, file: "/FifteenthImage.jpg", title: "Happy birthday Manushree!", caption: "This is most romantic thing I have done, and I hope it brings you some xxx" },
+  {
+  id: 17,
+  file: "/FifteenthImage.jpg",
+  title: "Happy birthday Manushree!",
+  caption: `
+    You are already aware of how much you mean to me. I just wanted to remind you again.
+    If anyone ever asks you what's the grand-est thing someone has ever done on your birthday, maybe this finds a spot. I hope you liked it and will cherish it on both good days and bad.
+    From the 1000s of things spoken and unspoken between us, thank you for tolerating me. You are the best. Happy birthday!
+    PS: This picture is too beautiful.
+  `,
+}
+
+
 ];
 
 export default function TimelinesPage() {

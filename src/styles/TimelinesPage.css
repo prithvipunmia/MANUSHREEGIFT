@@ -227,7 +227,7 @@ html, body, #root {
   border-radius: 12px;
   box-shadow: var(--shadow);
   max-width: 720px;
-  text-align: center;
+  text-align: left;
 }
 .final-thumb {
   width: 420px;
@@ -248,11 +248,29 @@ html, body, #root {
   font-weight: 800;
   color: #111;
   font-size: 20px;
+  text-align: center;
 }
 .final-caption {
-  margin: 0;
   color: var(--muted);
+  white-space: pre-line;    /* keep line breaks */
+  text-align: left;
+  line-height: 1.45;        /* tighter spacing for wrapped lines */
+  font-size: 1.05rem;
 }
+
+/* add space for double line breaks (paragraph gaps) */
+.final-caption::first-line {
+  line-height: 1.45;        /* keeps first line consistent */
+}
+
+/* simulate “paragraph spacing” between blocks of text */
+.final-caption br + br {
+  display: block;
+  margin-bottom: 14px;      /* extra gap between intended breaks */
+  content: "";
+}
+
+
 
 /* ===========================
    Responsive
