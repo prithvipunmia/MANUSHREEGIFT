@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/TimelinesPage.css";
 
 const ITEMS = [
-  { id: 1, file: "/FirstImage.jpg", title: "29th Feb, 2024", caption: "Who knew this was going to start a fun journey!" },
+  { id: 1, file: "/FirstImage.jpg", title: "29th Feb, 2024", caption: "Who knew this was going to start a fun journey! 😂" },
   { id: 2, file: "/SecondImage.jpg", title: "20th Jun, 2024", caption: "Projects with you were extra fun. Case in point" },
   { id: 3, file: "/ThirdImage.jpg", title: "14th Sept, 2024", caption: "Naive of us to be okay missing an opportunity to meet" },
   { id: 4, file: "/ForthImage.jpg", title: "01st Jan, 2025", caption: "You innocently shared this picture with me. I've held it with me since" },
@@ -97,8 +97,8 @@ export default function TimelinesPage() {
     <div className="timeline-page">
       <div className="timeline-wrapper">
         <header className="hero-header">
-          <h1 className="hero-title">little moments</h1>
-          <p className="hero-sub">Happy birthday — each of these reminded me of you.</p>
+          <h1 className="hero-title">Small things that made it fun</h1>
+          <p className="hero-sub">Tried to compile few of our favorite moments over 20000+ whatsapp texts & 3 meetings over the last 20 months</p>
         </header>
 
         <div className="timeline">
