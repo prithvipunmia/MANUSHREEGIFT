@@ -1,5 +1,6 @@
 /* ===========================
    Global + Fonts
+   (full file - replace existing)
 =========================== */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
 
@@ -134,7 +135,7 @@ html, body, #root {
 }
 
 /* ===========================
-   Card Content
+   Card Content (responsive-friendly)
 =========================== */
 .content {
   display: inline-flex;
@@ -144,7 +145,9 @@ html, body, #root {
   box-shadow: var(--shadow);
   border-radius: 12px;
   padding: 12px;
-  max-width: 620px;
+  width: 100%;
+  max-width: 620px; /* cap for large screens, but not used to compute text width */
+  box-sizing: border-box;
 }
 
 /* LEFT SIDE: thumb near center, text left-aligned */
@@ -167,9 +170,12 @@ html, body, #root {
   text-align: left;
 }
 
-/* Thumbnail */
+/* Thumbnail: keep aspect ratio but allow controlled shrink/grow */
 .thumb {
-  width: 240px;
+  /* keep a predictable min/ideal/max to preserve desktop look but be fluid */
+  flex: 0 0 clamp(140px, 24vw, 240px);
+  max-width: 240px;
+  width: 100%;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: 10px;
@@ -187,10 +193,11 @@ html, body, #root {
   border-radius: inherit;
 }
 
-/* Text */
+/* Text: allow flex children to shrink and wrap */
 .meta {
-  max-width: calc(100% - 320px);
+  flex: 1 1 auto;        /* take remaining space, will wrap on small screens */
   padding: 6px 8px;
+  min-width: 0;          /* important so flex children can shrink and wrap */
   text-align: left;
 }
 .label {
@@ -214,6 +221,7 @@ html, body, #root {
 
 /* ===========================
    Final Reveal (Centered)
+   final-thumb reduced to 1.5x of regular thumb (240px * 1.5 = 360px)
 =========================== */
 .final-reveal {
   display: flex;
@@ -229,8 +237,10 @@ html, body, #root {
   max-width: 720px;
   text-align: left;
 }
+/* final-thumb is 1.5x the normal thumbnail on desktop (360px) */
 .final-thumb {
-  width: 420px;
+  width: 100%;
+  max-width: 360px;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   margin: 0 auto 12px;
@@ -262,73 +272,178 @@ html, body, #root {
 .final-caption::first-line {
   line-height: 1.45;        /* keeps first line consistent */
 }
-
-/* simulate “paragraph spacing” between blocks of text */
 .final-caption br + br {
   display: block;
   margin-bottom: 14px;      /* extra gap between intended breaks */
   content: "";
 }
 
-
-
 /* ===========================
-   Responsive
+   Responsive overrides
 =========================== */
 @media (max-width: 880px) {
+  /* move timeline line to the left and remove translate center */
   .timeline-line {
-    left: 12px;
+    left: 32px;
     transform: none;
     width: 3px;
   }
+
+  /* full width items stacked */
   .timeline-item {
     width: 100%;
-    padding-left: 56px;
-    padding-right: 12px;
-  }
-  .timeline-item.right,
-  .timeline-item.left {
     left: 0;
-    text-align: left;
+    padding-left: 72px; /* leave space for line + marker */
+    padding-right: 16px;
   }
+
+  .timeline-item.left .content,
+  .timeline-item.right .content {
+    margin: 0;
+    justify-content: flex-start;
+  }
+
   .content {
     max-width: none;
-    width: calc(100% - 80px);
+    width: calc(100% - 72px); /* line + left padding accounted for */
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 12px;
     flex-direction: row;
   }
+
   .thumb {
-    width: 220px;
-    aspect-ratio: 4 / 5;
-    border-radius: 8px;
+    max-width: 160px; /* reduce on tablet */
+    flex: 0 0 clamp(120px, 22vw, 160px);
   }
+
   .final-thumb {
-    width: calc(100% - 80px);
-    aspect-ratio: 4 / 5;
+    width: calc(100% - 32px);
+    max-width: none;
   }
 }
 
+/* ===========================
+   MOBILE: show 2 full cards per viewport height
+   Each timeline-item ~50vh so two full cards visible in one screen
+=========================== */
 @media (max-width: 520px) {
+  /* stack timeline as a vertical list */
+  .timeline {
+    display: block;
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 12px;
+  }
+
+  /* hide the desktop center line */
+  .timeline-line {
+    display: none;
+  }
+
+  /* each item tries to take half the viewport height so two full cards fit */
+  .timeline-item {
+    position: static;
+    width: 100%;
+    padding: 8px 0;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(12px) scale(0.995);
+    transition: opacity 420ms ease, transform 420ms ease;
+    min-height: calc(50vh - 12px); /* adjust the subtraction if you need more/less spacing */
+    display: flex;
+    align-items: stretch;
+  }
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* image takes ~60% of the card height so title+caption fit below (40%) */
   .thumb {
     width: 100%;
+    height: calc(60%);
+    flex: 0 0 auto;
     aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 10px;
+    display: block;
+    background: #eee;
   }
-  .content {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    width: calc(100% - 70px);
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
   }
+
   .meta {
-    max-width: 100%;
-    text-align: left;
-    padding: 6px 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 6px 0 0 0;
+    overflow: hidden;
+  }
+  .label {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+  .caption {
+    font-size: 0.92rem;
+    line-height: 1.35;
+    margin: 0;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+    max-height: calc(40% - 16px); /* keep caption area capped so card height stays stable */
+  }
+
+  /* final card: slightly larger but capped to 90% width on mobile */
+  .final-reveal {
+    margin-top: 12px;
+  }
+  .final-card {
+    width: 100%;
+    box-sizing: border-box;
   }
   .final-thumb {
     width: 100%;
+    max-width: 90%;
+    margin: 0 auto 12px;
     aspect-ratio: 4 / 5;
+    height: auto;
   }
+  .final-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* buttons centered and comfortable tappable size */
+  .timeline-wrapper > div[style*="display: flex"] {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* slightly smaller hero text */
+  .hero-title { font-size: 20px; }
+  .hero-sub { font-size: 13px; }
 }
+
+/* Optional debugging helper (uncomment while debugging) */
+/* body { overflow-x: hidden; }  */
+/* .debug-outline * { outline: 1px dashed rgba(0,0,0,0.06); } */

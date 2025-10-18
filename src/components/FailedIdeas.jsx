@@ -1,10 +1,11 @@
 // src/components/FailedIdeas.jsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/TimelinesPage.css";
 
 export default function FailedIdeas() {
   const navigate = useNavigate();
+  const [nsfwOpen, setNsfwOpen] = useState(false);
 
   // ensure the same "loaded" class is added so opacity goes to 1
   useEffect(() => {
@@ -15,6 +16,8 @@ export default function FailedIdeas() {
     };
   }, []);
 
+  const toggleNsfw = () => setNsfwOpen((s) => !s);
+
   return (
     <div className="timeline-page">
       <div className="timeline-wrapper">
@@ -24,26 +27,80 @@ export default function FailedIdeas() {
         </header>
 
         <section className="failed-section">
-          <h3 className="failed-title">Attempt #1 — Guitar</h3>
-          <p className="failed-sub">I thought serenading would win points.</p>
+          <div className="failed-grid" role="list">
+            {/* Guitar Video Card */}
+            <article className="failed-card" role="listitem" aria-label="Guitar idea">
+              <div className="failed-media">
+                <video
+                  className="failed-video"
+                  src="/guitar.mp4"
+                  poster="/guitar-poster.jpg"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  aria-label="Guitar demo video"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              </div>
 
-          <div className="failed-grid">
-            <div className="failed-card">
-              <video controls playsInline src="/guitar.mp4" />
-            </div>
+              <div className="failed-meta">
+                <h3 className="failed-item-title">Attempt #1 — Guitar</h3>
+                <p className="failed-item-sub">I thought serenading would win points.</p>
+                <div className="card-actions">
+                  <button
+                    className="next-btn"
+                    onClick={() => {
+                      const v = document.querySelector(".failed-video");
+                      if (v && v.paused) v.play();
+                      else if (v) v.pause();
+                    }}
+                  >
+                    Play / Pause
+                  </button>
+                </div>
+              </div>
+            </article>
 
-            <div className="failed-card">
-              <h3>Attempt #2 — Dance</h3>
-              <video controls playsInline src="/dance.mp4" />
-            </div>
+            {/* NSFW Reveal Card */}
+            <article className="failed-card" role="listitem" aria-label="NSFW idea">
+              <div className="failed-media nsfw-media">
+                {!nsfwOpen ? (
+                  <button
+                    className="nsfw-cover"
+                    onClick={toggleNsfw}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") toggleNsfw();
+                    }}
+                    aria-pressed="false"
+                    aria-label="Reveal NSFW image (opens on click)"
+                  >
+                    <div className="nsfw-text">NSFW - open w caution</div>
+                    <div className="nsfw-sub">Click to reveal</div>
+                  </button>
+                ) : (
+                  <img src="/KillCringe.jpg" alt="NSFW reveal" className="nsfw-image" />
+                )}
+              </div>
+
+              <div className="failed-meta">
+                <h3 className="failed-item-title">NSFW (reveal-on-click)</h3>
+                <p className="failed-item-sub">
+                  A cringe experiment hidden behind a cover. Click to reveal. (Refresh to hide again.)
+                </p>
+                <div className="card-actions">
+                  <button className="next-btn" onClick={toggleNsfw}>
+                    {nsfwOpen ? "Hide" : "Reveal"}
+                  </button>
+                  <button className="next-btn" onClick={() => setNsfwOpen(false)}>
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </article>
           </div>
 
-          <div style={{ marginTop: 14, textAlign: "center" }}>
-            <div className="failed-card" style={{ display: "inline-block", maxWidth: 420 }}>
-              <p style={{ margin: 8, fontWeight: 700 }}>NSFW (Very Cringe)</p>
-              <img src="/KillCringe.jpg" alt="cringe" style={{ width: "100%", borderRadius: 10 }} />
-            </div>
-          </div>
+          {/* footer-ish area for the NSFW standalone (kept small) */}
         </section>
 
         <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>

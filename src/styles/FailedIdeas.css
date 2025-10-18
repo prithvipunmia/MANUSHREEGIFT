@@ -1,0 +1,110 @@
+/* ===========================
+   Failed Ideas specific styles
+   Append this to src/styles/TimelinesPage.css
+=========================== */
+
+.failed-section {
+  margin-top: 8px;
+}
+
+/* Grid: desktop side-by-side, mobile stacked */
+.failed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+/* Each card uses the existing card visual language */
+.failed-card {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+  border-radius: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+/* Media area (left) */
+.failed-media {
+  width: 48%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #eee;
+  flex-shrink: 0;
+}
+
+/* Video / image full-bleed inside media box */
+.failed-media img,
+.failed-media video,
+.failed-video,
+.nsfw-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
+/* Meta (right) */
+.failed-meta {
+  width: 52%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+.failed-item-title { margin: 0; font-weight: 800; font-size: 18px; }
+.failed-item-sub { margin: 0; color: var(--muted); }
+
+/* NSFW cover */
+.nsfw-cover {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+  gap: 6px;
+  font-weight: 700;
+}
+.nsfw-cover:focus { outline: 3px solid rgba(255,20,147,0.18); }
+.nsfw-text { font-size: 1.05rem; letter-spacing: 0.2px; }
+.nsfw-sub  { font-size: 0.85rem; color: rgba(255,255,255,0.8); font-weight: 600; }
+
+/* card actions reuse .next-btn; keep spacing */
+.card-actions { margin-top: 8px; display:flex; gap:10px; }
+
+/* Responsive: mobile single column stack, media on top */
+@media (max-width: 520px) {
+  .failed-grid {
+    grid-template-columns: 1fr;
+  }
+  .failed-card {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .failed-media, .failed-meta {
+    width: 100%;
+  }
+  .failed-media {
+    height: 48vh; /* reserve about half the viewport so image+text fit across two cards; tweak if needed */
+    border-radius: 12px;
+  }
+
+  /* smaller titles on mobile */
+  .failed-item-title { font-size: 16px; }
+  .hero-title { font-size: 20px; }
+}

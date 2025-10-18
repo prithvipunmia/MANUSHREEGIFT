@@ -1,4 +1,3 @@
-// src/components/TimelinesPage.jsx
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/TimelinesPage.css";
@@ -21,18 +20,16 @@ const ITEMS = [
   { id: 15, file: "/ThirteenthImage.jpg", title: "23rd Sep", caption: "I live for this kind of content" },
   { id: 16, file: "/FourteenthImage.jpg", title: "9th Oct", caption: "and this!" },
   {
-  id: 17,
-  file: "/FifteenthImage.jpg",
-  title: "Happy birthday Manushree!",
-  caption: `
+    id: 17,
+    file: "/FifteenthImage.jpg",
+    title: "Happy birthday Manushree!",
+    caption: `
     You are already aware of how much you mean to me. I just wanted to remind you again.
     If anyone ever asks you what's the grand-est thing someone has ever done on your birthday, maybe this finds a spot. I hope you liked it and will cherish it on both good days and bad.
     From the 1000s of things spoken and unspoken between us, thank you for tolerating me. You are the best. Happy birthday!
     PS: This picture is too beautiful.
   `,
-}
-
-
+  },
 ];
 
 export default function TimelinesPage() {
@@ -51,6 +48,7 @@ export default function TimelinesPage() {
       },
       { root: null, rootMargin: "0px 0px -15% 0px", threshold: 0.05 }
     );
+
     const observeItems = () => {
       document.querySelectorAll(".timeline-item").forEach((el) => io.observe(el));
     };
@@ -76,23 +74,32 @@ export default function TimelinesPage() {
       updateSplitPoint();
     };
     window.addEventListener("resize", onResize);
+
     // images load: update split once each image loads
-    const imgs = Array.from(document.querySelectorAll(".thumb img"));
+    const imgs = Array.from(document.querySelectorAll(".thumb img, .final-thumb img"));
     let imagesToListen = imgs.length;
     if (imagesToListen === 0) updateSplitPoint();
+
     imgs.forEach((img) => {
       if (img.complete) {
         imagesToListen -= 1;
       } else {
-        img.addEventListener("load", () => {
-          imagesToListen -= 1;
-          if (imagesToListen <= 0) updateSplitPoint();
-        }, { once: true });
+        img.addEventListener(
+          "load",
+          () => {
+            imagesToListen -= 1;
+            if (imagesToListen <= 0) {
+              // ensure layout has settled
+              requestAnimationFrame(updateSplitPoint);
+            }
+          },
+          { once: true }
+        );
       }
     });
 
     // initial call (in case items already in place)
-    setTimeout(updateSplitPoint, 60);
+    setTimeout(() => requestAnimationFrame(updateSplitPoint), 60);
 
     // cleanup
     return () => {
@@ -148,8 +155,8 @@ export default function TimelinesPage() {
 
         {/* buttons come after final reveal */}
         <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>
-          <button className="next-btn" onClick={() => navigate(-1)}>Back</button>
-          <button className="next-btn" onClick={() => navigate("/failed")}>Next → Failed Ideas</button>
+          <button className="next-btn" onClick={() => navigate(-1)}>Main</button>
+          <button className="next-btn" onClick={() => navigate("/failed")}>Other ideas I dropped 😂 </button>
         </div>
       </div>
     </div>
