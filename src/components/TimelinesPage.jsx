@@ -20,8 +20,6 @@ const ITEMS = [
   { id: 14, file: "/TwelthImage.jpg", title: "2nd Sep", caption: "Start to dramatic 3 days of our lives captured perfectly" },
   { id: 15, file: "/ThirteenthImage.jpg", title: "23rd Sep", caption: "I live for this kind of content" },
   { id: 16, file: "/FourteenthImage.jpg", title: "9th Oct", caption: "and this!" },
-  // Note: final centered image (the birthday reveal) IS EXCLUDED from the alternating timeline below.
-  // We'll render it separately as the final CENTERED card.
   { id: 17, file: "/FifteenthImage.jpg", title: "Happy birthday Manushree!", caption: "This is most romantic thing I have done, and I hope it brings you some xxx" },
 ];
 
@@ -32,6 +30,7 @@ export default function TimelinesPage() {
     const page = document.querySelector(".timeline-page");
     if (page) page.classList.add("loaded");
 
+    // IntersectionObserver for fade-ins
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -40,13 +39,57 @@ export default function TimelinesPage() {
       },
       { root: null, rootMargin: "0px 0px -15% 0px", threshold: 0.05 }
     );
+    const observeItems = () => {
+      document.querySelectorAll(".timeline-item").forEach((el) => io.observe(el));
+    };
+    observeItems();
 
-    const items = document.querySelectorAll(".timeline-item");
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    // Function that calculates the split point (px) — set based on the 10th item (index 9)
+    const updateSplitPoint = () => {
+      const tenItem = document.querySelectorAll(".timeline-item")[9]; // index 9 is 10th item
+      if (tenItem) {
+        // split at the top of the 10th item (relative to document)
+        const rect = tenItem.getBoundingClientRect();
+        const splitPx = Math.round(rect.top + window.scrollY);
+        document.documentElement.style.setProperty("--split-point", `${splitPx}px`);
+      } else {
+        // fallback (approx): set split 60% down
+        const fallback = Math.round(window.innerHeight * 0.6);
+        document.documentElement.style.setProperty("--split-point", `${fallback}px`);
+      }
+    };
+
+    // update on load/resize and after images load (images may change layout)
+    const onResize = () => {
+      updateSplitPoint();
+    };
+    window.addEventListener("resize", onResize);
+    // images load: update split once each image loads
+    const imgs = Array.from(document.querySelectorAll(".thumb img"));
+    let imagesToListen = imgs.length;
+    if (imagesToListen === 0) updateSplitPoint();
+    imgs.forEach((img) => {
+      if (img.complete) {
+        imagesToListen -= 1;
+      } else {
+        img.addEventListener("load", () => {
+          imagesToListen -= 1;
+          if (imagesToListen <= 0) updateSplitPoint();
+        }, { once: true });
+      }
+    });
+
+    // initial call (in case items already in place)
+    setTimeout(updateSplitPoint, 60);
+
+    // cleanup
+    return () => {
+      io.disconnect();
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
-  // Use all except the last item (index last) for alternating timeline
+  // Prepare items: all except final (index last) used in alternating timeline
   const allButFinal = ITEMS.slice(0, ITEMS.length - 1);
   const finalItem = ITEMS[ITEMS.length - 1];
 
@@ -80,13 +123,8 @@ export default function TimelinesPage() {
           })}
         </div>
 
-        <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>
-          <button className="next-btn" onClick={() => navigate(-1)}>Back</button>
-          <button className="next-btn" onClick={() => navigate("/failed")}>Next → Failed Ideas</button>
-        </div>
-
-        {/* Final centered item (not part of the alternating journey) */}
-        <div className="final-reveal" role="region" aria-label="final reveal" style={{ marginTop: 48 }}>
+        {/* final centered item BEFORE buttons (user requested) */}
+        <div className="final-reveal" role="region" aria-label="final reveal" style={{ marginTop: 36 }}>
           <div className="final-card">
             <div className="final-thumb">
               <img src={finalItem.file} alt={finalItem.title} />
@@ -94,6 +132,12 @@ export default function TimelinesPage() {
             <h3 className="final-title">{finalItem.title}</h3>
             <p className="final-caption">{finalItem.caption}</p>
           </div>
+        </div>
+
+        {/* buttons come after final reveal */}
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>
+          <button className="next-btn" onClick={() => navigate(-1)}>Back</button>
+          <button className="next-btn" onClick={() => navigate("/failed")}>Next → Failed Ideas</button>
         </div>
       </div>
     </div>

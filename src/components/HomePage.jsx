@@ -1,25 +1,25 @@
-// src/components/HomePage.js
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../App.css"; // optional global styling
+import "../styles/HomePage.css"; // move styling to a dedicated file
 
 function HomePage() {
   const navigate = useNavigate();
 
   return (
     <div className="homepage-container">
-      <h1 className="title">Welcome to KillCringe 🌈</h1>
-      <img
-        src="/KillCringe.jpg"
-        alt="Kill Cringe"
-        className="cute-image"
-      />
-      <button
-        className="next-button"
-        onClick={() => navigate("/timelines")}
-      >
-        Let’s Go ➡️
-      </button>
+      <div className="content-box">
+        <img
+          src="/KillCringe.jpg"
+          alt="Kill Cringe"
+          className="cute-image"
+        />
+        <button
+          className="next-button"
+          onClick={() => navigate("/timelines")}
+        >
+          Best of luck (to me) ➡️
+        </button>
+      </div>
     </div>
   );
 }
