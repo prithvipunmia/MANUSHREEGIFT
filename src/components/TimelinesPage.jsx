@@ -24,10 +24,9 @@ const ITEMS = [
     file: "/FifteenthImage.jpg",
     title: "Happy birthday Manushree!",
     caption: `
-    You are already aware of how much you mean to me. I just wanted to remind you again.
+    After 60,000+ texts and 3 meet ups in the last 20 months between us, you are already aware of how much you mean to me. I just wanted to remind you again.
     If anyone ever asks you what's the grand-est thing someone has ever done on your birthday, maybe this finds a spot. I hope you liked it and will cherish it on both good days and bad.
-    From the 1000s of things spoken and unspoken between us, thank you for tolerating me. You are the best. Happy birthday!
-    PS: This picture is too beautiful.
+    Thank you for tolerating me. You are the best. Happy birthday!
   `,
   },
 ];
@@ -117,7 +116,7 @@ export default function TimelinesPage() {
       <div className="timeline-wrapper">
         <header className="hero-header">
           <h1 className="hero-title">Small things that made it fun</h1>
-          <p className="hero-sub">Tried to compile few of our favorite moments over 20000+ whatsapp texts & 3 meetings over the last 20 months</p>
+          <p className="hero-sub">Tried to compile an online scrap book for a predominantly online relationship</p>
         </header>
 
         <div className="timeline">

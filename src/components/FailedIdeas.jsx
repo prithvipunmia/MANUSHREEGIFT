@@ -1,7 +1,6 @@
-// src/components/FailedIdeas.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/TimelinesPage.css";
+import "../styles/FailedIdeas.css";
 
 export default function FailedIdeas() {
   const navigate = useNavigate();
@@ -22,8 +21,8 @@ export default function FailedIdeas() {
     <div className="timeline-page">
       <div className="timeline-wrapper">
         <header className="hero-header">
-          <h1 className="hero-title">Failed Ideas</h1>
-          <p className="hero-sub">Attempts that turned into laughs. Swipe/scroll.</p>
+          <h1 className="hero-title">Bonus Content</h1>
+          <p className="hero-sub">Other things I tried for your birthday 😂</p>
         </header>
 
         <section className="failed-section">
@@ -31,83 +30,71 @@ export default function FailedIdeas() {
             {/* Guitar Video Card */}
             <article className="failed-card" role="listitem" aria-label="Guitar idea">
               <div className="failed-media">
-                <video
-                  className="failed-video"
-                  src="/guitar.mp4"
-                  poster="/guitar-poster.jpg"
-                  controls
-                  playsInline
-                  preload="metadata"
-                  aria-label="Guitar demo video"
-                >
-                  Your browser does not support the video tag.
-                </video>
+                <div className="media-inner">
+                  <video
+                    className="failed-video"
+                    src="/guitar.mp4"
+                    poster="/guitar-poster.jpg"
+                    controls
+                    playsInline
+                    preload="metadata"
+                    aria-label="Guitar demo video"
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </div>
 
               <div className="failed-meta">
-                <h3 className="failed-item-title">Attempt #1 — Guitar</h3>
-                <p className="failed-item-sub">I thought serenading would win points.</p>
-                <div className="card-actions">
-                  <button
-                    className="next-btn"
-                    onClick={() => {
-                      const v = document.querySelector(".failed-video");
-                      if (v && v.paused) v.play();
-                      else if (v) v.pause();
-                    }}
-                  >
-                    Play / Pause
-                  </button>
-                </div>
+                <h3 className="failed-item-title">I thought I'll get brownie points for the singing attempt 😂</h3>
+                <div className="card-actions" />
               </div>
             </article>
 
-            {/* NSFW Reveal Card */}
+            {/* NSFW Reveal Card (image toggles on click) */}
             <article className="failed-card" role="listitem" aria-label="NSFW idea">
               <div className="failed-media nsfw-media">
-                {!nsfwOpen ? (
-                  <button
-                    className="nsfw-cover"
-                    onClick={toggleNsfw}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") toggleNsfw();
-                    }}
-                    aria-pressed="false"
-                    aria-label="Reveal NSFW image (opens on click)"
-                  >
-                    <div className="nsfw-text">NSFW - open w caution</div>
-                    <div className="nsfw-sub">Click to reveal</div>
-                  </button>
-                ) : (
-                  <img src="/KillCringe.jpg" alt="NSFW reveal" className="nsfw-image" />
-                )}
+                <div className="media-inner">
+                  {!nsfwOpen ? (
+                    <button
+                      className="nsfw-cover"
+                      onClick={toggleNsfw}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") toggleNsfw();
+                      }}
+                      aria-pressed={nsfwOpen}
+                      aria-label="Reveal image (click or press Enter)"
+                      type="button"
+                    >
+                      <div className="nsfw-text">NSFW - click w caution 🥵⛔</div>
+                    </button>
+                  ) : (
+                    <img
+                      src="/Cringe.JPEG"
+                      alt="NSFW reveal"
+                      className="nsfw-image"
+                      onClick={toggleNsfw}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") toggleNsfw();
+                      }}
+                      role="button"
+                      tabIndex={0}
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="failed-meta">
-                <h3 className="failed-item-title">NSFW (reveal-on-click)</h3>
-                <p className="failed-item-sub">
-                  A cringe experiment hidden behind a cover. Click to reveal. (Refresh to hide again.)
-                </p>
-                <div className="card-actions">
-                  <button className="next-btn" onClick={toggleNsfw}>
-                    {nsfwOpen ? "Hide" : "Reveal"}
-                  </button>
-                  <button className="next-btn" onClick={() => setNsfwOpen(false)}>
-                    Reset
-                  </button>
-                </div>
+                <h3 className="failed-item-title">Thirst trap enough? 😂</h3>
               </div>
             </article>
           </div>
-
-          {/* footer-ish area for the NSFW standalone (kept small) */}
         </section>
 
         <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>
-          <button className="next-btn" onClick={() => navigate("/timelines")}>← Back to Timeline</button>
-          <button className="next-btn" onClick={() => navigate("/")}>Finish</button>
+          <button className="next-btn" onClick={() => navigate("/")}>Re-cringe?</button>
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 }
