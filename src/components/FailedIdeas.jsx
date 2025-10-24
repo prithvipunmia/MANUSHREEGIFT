@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/FailedIdeas.css";
 
 export default function FailedIdeas() {
   const navigate = useNavigate();
   const [nsfwOpen, setNsfwOpen] = useState(false);
+  const videoRef = useRef(null);
 
   // ensure the same "loaded" class is added so opacity goes to 1
   useEffect(() => {
@@ -16,6 +17,56 @@ export default function FailedIdeas() {
   }, []);
 
   const toggleNsfw = () => setNsfwOpen((s) => !s);
+
+  // Prevent true fullscreen / expansion and ensure 'contain' is used so media never distorts.
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      const el =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement ||
+        null;
+
+      if (el) {
+        const exit =
+          document.exitFullscreen ||
+          document.webkitExitFullscreen ||
+          document.mozCancelFullScreen ||
+          document.msExitFullscreen ||
+          null;
+        if (exit) {
+          try { exit.call(document); } catch (e) { /* ignore */ }
+        }
+      }
+
+      document.querySelectorAll("video").forEach((v) => {
+        v.style.objectFit = "contain";
+        v.style.transform = "none";
+      });
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+    document.addEventListener("mozfullscreenchange", onFullscreenChange);
+    document.addEventListener("MSFullscreenChange", onFullscreenChange);
+
+    const onOrientation = () => {
+      document.querySelectorAll("video").forEach((v) => {
+        v.style.objectFit = "contain";
+        v.style.transform = "none";
+      });
+    };
+    window.addEventListener("orientationchange", onOrientation);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", onFullscreenChange);
+      document.removeEventListener("mozfullscreenchange", onFullscreenChange);
+      document.removeEventListener("MSFullscreenChange", onFullscreenChange);
+      window.removeEventListener("orientationchange", onOrientation);
+    };
+  }, []);
 
   return (
     <div className="timeline-page">
@@ -32,6 +83,7 @@ export default function FailedIdeas() {
               <div className="failed-media">
                 <div className="media-inner">
                   <video
+                    ref={videoRef}
                     className="failed-video"
                     src="/guitar.mp4"
                     poster="/guitar-poster.jpg"
@@ -39,9 +91,10 @@ export default function FailedIdeas() {
                     playsInline
                     preload="metadata"
                     aria-label="Guitar demo video"
-                  >
-                    Your browser does not support the video tag.
-                  </video>
+                    controlsList="nodownload noremoteplayback nofullscreen"
+                    disablePictureInPicture
+                    disableRemotePlayback
+                  />
                 </div>
               </div>
 
@@ -79,6 +132,7 @@ export default function FailedIdeas() {
                       }}
                       role="button"
                       tabIndex={0}
+                      style={{ objectFit: "contain" }}
                     />
                   )}
                 </div>
@@ -95,6 +149,6 @@ export default function FailedIdeas() {
           <button className="next-btn" onClick={() => navigate("/")}>Re-cringe?</button>
         </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 }
